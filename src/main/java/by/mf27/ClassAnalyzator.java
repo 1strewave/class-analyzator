@@ -3,6 +3,7 @@ package by.mf27;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 public class ClassAnalyzator {
 
@@ -35,9 +36,9 @@ public class ClassAnalyzator {
             if (method.getReturnType().getName().equals("java.lang.String")) {
                 methodReturnType = "String";
             }
-            String methodParameterTypes = method.getParameterTypes().toString();
+            String methodParameter = Arrays.toString(method.getParameters());
 
-            System.out.println(Prefix + " " + modifierString + " " + methodReturnType + " " + methodName + "(" + methodParameterTypes + ")");
+            System.out.println(Prefix + " " + modifierString + " " + methodReturnType + " " + methodName + "(" + methodParameter + ")");
         }
     }
 }

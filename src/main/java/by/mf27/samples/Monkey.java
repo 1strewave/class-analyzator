@@ -13,7 +13,7 @@ public class Monkey {
         return this.name;
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(String message, int asasas, boolean dsadas) {
         System.out.println(message);
     }
 
