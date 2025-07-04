@@ -27,6 +27,9 @@ public class ClassAnalyzator {
         }
     }
 
+    /*
+    * @mf27: Reason for doing the same method again is based on adding parameters
+    */
     private void parseMethodData(String Prefix, Class clazz) {
         for (Method method : clazz.getDeclaredMethods()) {
             int methodMod = method.getModifiers();
