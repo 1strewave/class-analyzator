@@ -1,5 +1,6 @@
 package by.mf27;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -11,6 +12,8 @@ public class ClassAnalyzator {
         this.parseFieldData("\uD83D\uDD27 Field:", clazz);
         this.parseMethodData("\uD83D\uDCE3 Method:", clazz);
     }
+
+    // TODO: Add parsing to Annotations and Constructors, and also output data about super class and implemented interfaces
 
     private void parseFieldData(String Prefix, Class clazz) {
         for (Field field : clazz.getDeclaredFields()) {
