@@ -11,47 +11,50 @@ import java.util.Arrays;
 public class ClassAnalyzator {
 
     public void analyzeClass(Class<?> clazz) {
-        this.parseSuperClass("\uD83E\uDDF1 Superclass", clazz);
-        this.parseInterfaces("\uD83E\uDDE9 Interface", clazz);
+        this.parseSuperClass("\uD83E\uDDF1 Superclass:", clazz);
+        this.parseInterfaces("\uD83E\uDDE9 Interface:", clazz);
         this.parseFieldData("\uD83D\uDD27 Field:", clazz);
         this.parseConstructorData("\uD83D\uDEE0️ Constructor:", clazz);
         this.parseMethodData("\uD83D\uDCE3 Method:", clazz);
     }
 
     private void parseFieldData(String Prefix, Class<?> clazz) {
-        for (Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(DontAnalyze.class)) continue;
-            String modifierString = Modifier.toString(field.getModifiers());
-            String fieldName = field.getName();
-            String fieldType = field.getType().getName();
-            if (field.getType().getName().equals("java.lang.String")) fieldType = "String";
-
-            System.out.println(Prefix + " " + modifierString + " " + fieldType + " " + fieldName);
-        }
+        Arrays.stream(clazz.getDeclaredFields())
+                .filter(field -> !field.isAnnotationPresent(DontAnalyze.class))
+                .map(field -> {
+                    String modifierString = Modifier.toString(field.getModifiers());
+                    String fieldName = field.getName();
+                    String fieldType = field.getType().getName();
+                    if (field.getType().getName().equals("java.lang.String")) fieldType = "String";
+                    return Prefix + " " + modifierString + " " + fieldType + " " + fieldName;
+                })
+                .forEach(System.out::println);
     }
 
     private void parseMethodData(String Prefix, Class<?> clazz) {
-        for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(DontAnalyze.class)) continue;
-            String modifierString = Modifier.toString(method.getModifiers());
-            String methodName = method.getName();
-            String methodReturnType = method.getReturnType().getName();
-            if (method.getReturnType().getName().equals("java.lang.String")) methodReturnType = "String";
-            String methodParameter = Arrays.toString(method.getParameters());
-
-            System.out.println(Prefix + " " + modifierString + " " + methodReturnType + " " + methodName + "(" + methodParameter + ")");
-        }
+        Arrays.stream(clazz.getDeclaredMethods())
+                .filter(method -> !method.isAnnotationPresent(DontAnalyze.class))
+                .map(method -> {
+                    String modifierString = Modifier.toString(method.getModifiers());
+                    String methodName = method.getName();
+                    String methodReturnType = method.getReturnType().getName();
+                    if (method.getReturnType().getName().equals("java.lang.String")) methodReturnType = "String";
+                    String methodParameter = Arrays.toString(method.getParameters());
+                    return Prefix + " " + modifierString + " " + methodReturnType + " " + methodName + "(" + methodParameter + ")";
+                })
+                .forEach(System.out::println);
     }
 
     private void parseConstructorData(String Prefix, Class<?> clazz) {
-        for (Constructor constructor : clazz.getDeclaredConstructors()) {
-            if (constructor.isAnnotationPresent(DontAnalyze.class)) continue;
-            String modifierString = Modifier.toString(constructor.getModifiers());
-            String constructorName = constructor.getName();
-            String constructorParameter = Arrays.toString(constructor.getParameters());
-
-            System.out.println(Prefix + " " + modifierString + " " + constructorName + " (" + constructorParameter + ")");
-        }
+        Arrays.stream(clazz.getDeclaredConstructors())
+                .filter(constructor -> !constructor.isAnnotationPresent(DontAnalyze.class))
+                .map(constructor -> {
+                    String modifierString = Modifier.toString(constructor.getModifiers());
+                    String constructorName = constructor.getName();
+                    String constructorParameter = Arrays.toString(constructor.getParameters());
+                    return Prefix + " " + modifierString + " " + constructorName + " (" + constructorParameter + ")";
+                })
+                .forEach(System.out::println);
     }
 
     private void parseSuperClass(String Prefix, Class<?> clazz) {
@@ -61,10 +64,11 @@ public class ClassAnalyzator {
     }
 
     private void parseInterfaces(String Prefix, Class<?> clazz) {
-        for (Class<?> interf : clazz.getInterfaces()) {
-            String interfaceName = interf.getTypeName();
-
-            System.out.println(Prefix + " " + interfaceName);
-        }
+        Arrays.stream(clazz.getInterfaces())
+                .map(interfaceClass -> {
+                    String interfaceName = interfaceClass.getTypeName();
+                    return Prefix + " " + interfaceName;
+                })
+                .forEach(System.out::println);
     }
 }

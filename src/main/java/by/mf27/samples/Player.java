@@ -4,7 +4,6 @@ import by.mf27.annotations.DontAnalyze;
 
 public final class Player extends Monkey implements SampleInterface {
     private final String name;
-    @DontAnalyze
     private int age;
     @DontAnalyze
     private boolean isMale;
