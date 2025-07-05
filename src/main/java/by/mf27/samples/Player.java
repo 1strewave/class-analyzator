@@ -9,13 +9,13 @@ public final class Player {
     @DontAnalyze
     private boolean isMale;
 
-    Player() {
+    public Player() {
         this.name = "sosiska";
         this.age = 0;
         this.isMale = true;
     }
 
-    Player(final String name, final int age, final boolean isMale) {
+    public Player(final String name, final int age, final boolean isMale) {
         this.name = name;
         this.age = age;
         this.isMale = isMale;

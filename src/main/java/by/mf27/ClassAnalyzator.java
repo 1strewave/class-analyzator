@@ -2,7 +2,7 @@ package by.mf27;
 
 import by.mf27.annotations.DontAnalyze;
 
-import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -12,16 +12,16 @@ public class ClassAnalyzator {
 
     public void analyzeClass(Class clazz) {
         this.parseFieldData("\uD83D\uDD27 Field:", clazz);
+        this.parseConstructorData("\uD83D\uDEE0\uFE0F Constructor:", clazz);
         this.parseMethodData("\uD83D\uDCE3 Method:", clazz);
     }
 
-    // TODO: Add parsing to Constructors, and also output data about super class and implemented interfaces
+    // TODO: Output data about super class and implemented interfaces
 
     private void parseFieldData(String Prefix, Class clazz) {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(DontAnalyze.class)) continue;
-            int fieldMod = field.getModifiers();
-            String modifierString = Modifier.toString(fieldMod);
+            String modifierString = Modifier.toString(field.getModifiers());
             String fieldName = field.getName();
             String fieldType = field.getType().getName();
             if (field.getType().getName().equals("java.lang.String")) {
@@ -32,14 +32,10 @@ public class ClassAnalyzator {
         }
     }
 
-    /*
-    * @mf27: Reason for doing the same method again is based on adding parameters
-    */
     private void parseMethodData(String Prefix, Class clazz) {
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(DontAnalyze.class)) continue;
-            int methodMod = method.getModifiers();
-            String modifierString = Modifier.toString(methodMod);
+            String modifierString = Modifier.toString(method.getModifiers());
             String methodName = method.getName();
             String methodReturnType = method.getReturnType().getName();
             if (method.getReturnType().getName().equals("java.lang.String")) {
@@ -48,6 +44,17 @@ public class ClassAnalyzator {
             String methodParameter = Arrays.toString(method.getParameters());
 
             System.out.println(Prefix + " " + modifierString + " " + methodReturnType + " " + methodName + "(" + methodParameter + ")");
+        }
+    }
+
+    private void parseConstructorData(String Prefix, Class clazz) {
+        for (Constructor constructor : clazz.getDeclaredConstructors()) {
+            if (constructor.isAnnotationPresent(DontAnalyze.class)) continue;
+            String modifierString = Modifier.toString(constructor.getModifiers());
+            String constructorName = constructor.getName();
+            String constructorParameter = Arrays.toString(constructor.getParameters());
+
+            System.out.println(Prefix + " " + modifierString + " " + constructorName + " (" + constructorParameter + ")");
         }
     }
 }
