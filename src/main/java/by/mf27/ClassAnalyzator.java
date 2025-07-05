@@ -11,6 +11,8 @@ import java.util.Arrays;
 public class ClassAnalyzator {
 
     public void analyzeClass(Class clazz) {
+        this.getSuperClass("\uD83E\uDDF1 Superclass", clazz);
+        this.getInterfaces("\uD83E\uDDE9 Interface", clazz);
         this.parseFieldData("\uD83D\uDD27 Field:", clazz);
         this.parseConstructorData("\uD83D\uDEE0\uFE0F Constructor:", clazz);
         this.parseMethodData("\uD83D\uDCE3 Method:", clazz);
@@ -55,6 +57,20 @@ public class ClassAnalyzator {
             String constructorParameter = Arrays.toString(constructor.getParameters());
 
             System.out.println(Prefix + " " + modifierString + " " + constructorName + " (" + constructorParameter + ")");
+        }
+    }
+
+    private void getSuperClass(String Prefix, Class clazz) {
+        String superClass = clazz.getSuperclass().getName();
+        if (superClass == null) return;
+
+        System.out.println(Prefix + " " + superClass);
+    }
+
+    private void getInterfaces(String Prefix, Class clazz) {
+        for (Class interf : clazz.getInterfaces()) {
+            String interfaceName = interf.getName();
+            System.out.println(Prefix + " " + interfaceName);
         }
     }
 }
