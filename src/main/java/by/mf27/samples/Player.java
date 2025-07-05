@@ -1,8 +1,12 @@
 package by.mf27.samples;
 
+import by.mf27.annotations.DontAnalyze;
+
 public final class Player {
     private final String name;
+    @DontAnalyze
     private int age;
+    @DontAnalyze
     private boolean isMale;
 
     Player() {
