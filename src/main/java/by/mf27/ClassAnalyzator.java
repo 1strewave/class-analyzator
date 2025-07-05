@@ -10,46 +10,40 @@ import java.util.Arrays;
 
 public class ClassAnalyzator {
 
-    public void analyzeClass(Class clazz) {
-        this.getSuperClass("\uD83E\uDDF1 Superclass", clazz);
-        this.getInterfaces("\uD83E\uDDE9 Interface", clazz);
+    public void analyzeClass(Class<?> clazz) {
+        this.parseSuperClass("\uD83E\uDDF1 Superclass", clazz);
+        this.parseInterfaces("\uD83E\uDDE9 Interface", clazz);
         this.parseFieldData("\uD83D\uDD27 Field:", clazz);
-        this.parseConstructorData("\uD83D\uDEE0\uFE0F Constructor:", clazz);
+        this.parseConstructorData("\uD83D\uDEE0️ Constructor:", clazz);
         this.parseMethodData("\uD83D\uDCE3 Method:", clazz);
     }
 
-    // TODO: Output data about super class and implemented interfaces
-
-    private void parseFieldData(String Prefix, Class clazz) {
+    private void parseFieldData(String Prefix, Class<?> clazz) {
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(DontAnalyze.class)) continue;
             String modifierString = Modifier.toString(field.getModifiers());
             String fieldName = field.getName();
             String fieldType = field.getType().getName();
-            if (field.getType().getName().equals("java.lang.String")) {
-                fieldType = "String";
-            }
+            if (field.getType().getName().equals("java.lang.String")) fieldType = "String";
 
             System.out.println(Prefix + " " + modifierString + " " + fieldType + " " + fieldName);
         }
     }
 
-    private void parseMethodData(String Prefix, Class clazz) {
+    private void parseMethodData(String Prefix, Class<?> clazz) {
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(DontAnalyze.class)) continue;
             String modifierString = Modifier.toString(method.getModifiers());
             String methodName = method.getName();
             String methodReturnType = method.getReturnType().getName();
-            if (method.getReturnType().getName().equals("java.lang.String")) {
-                methodReturnType = "String";
-            }
+            if (method.getReturnType().getName().equals("java.lang.String")) methodReturnType = "String";
             String methodParameter = Arrays.toString(method.getParameters());
 
             System.out.println(Prefix + " " + modifierString + " " + methodReturnType + " " + methodName + "(" + methodParameter + ")");
         }
     }
 
-    private void parseConstructorData(String Prefix, Class clazz) {
+    private void parseConstructorData(String Prefix, Class<?> clazz) {
         for (Constructor constructor : clazz.getDeclaredConstructors()) {
             if (constructor.isAnnotationPresent(DontAnalyze.class)) continue;
             String modifierString = Modifier.toString(constructor.getModifiers());
@@ -60,16 +54,16 @@ public class ClassAnalyzator {
         }
     }
 
-    private void getSuperClass(String Prefix, Class clazz) {
-        String superClass = clazz.getSuperclass().getName();
-        if (superClass == null) return;
+    private void parseSuperClass(String Prefix, Class<?> clazz) {
+        String superClass = clazz.getSuperclass().getTypeName();
 
         System.out.println(Prefix + " " + superClass);
     }
 
-    private void getInterfaces(String Prefix, Class clazz) {
-        for (Class interf : clazz.getInterfaces()) {
-            String interfaceName = interf.getName();
+    private void parseInterfaces(String Prefix, Class<?> clazz) {
+        for (Class<?> interf : clazz.getInterfaces()) {
+            String interfaceName = interf.getTypeName();
+
             System.out.println(Prefix + " " + interfaceName);
         }
     }
